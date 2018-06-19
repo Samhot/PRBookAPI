@@ -12,10 +12,11 @@ app.use(bodyParser.urlencoded({
 
 ServerWOD = require('./routes_wods');
 ServerTODO = require('./routes_todos');
+ServerGlobal = require('./routes_global');
  
 // default route
 app.get('/', function (req, res) {
-    return res.send({ error: true, message: 'Bienvenue' })
+    return res.send({ message: 'Bienveeeenue' })
 });
 
 // // // // // // // // // WODS // // // // // // // // // //
@@ -56,11 +57,29 @@ app.put('/todo/:id', ServerTODO.updateTodo);
 //  Delete todo
 app.delete('/todo/:id', ServerTODO.deleteTodo);
 
+// Search for todos with ‘bug’ in their name
+app.get('/todo/search/:keyword', ServerTODO.searchTodo);
+
+// // // // // // // // // MOUVS // // // // // // // // // //
+
+// Retrieve all mouvs 
+app.get('/mouvs', ServerWOD.getMouvs);
+
+// Retrieve mouv with id 
+app.get('/mouv/:id', ServerWOD.getMouvById);
+
+// Search for mouvs with ‘bug’ in their name
+app.get('/mouv/search/:keyword', ServerWOD.searchMouv);
+
+// // // // // // // // // GLOBAL // // // // // // // // // //
+// Search for anything with ‘bug’ in their name
+// app.get('/search/:keyword', ServerGlobal.searchGlobal);
+
 // // // // // // // // // // // // // // // // // // // // // // // // // // // /// // // // //
 
 // port must be set to 3000 because incoming http requests are routed from port 80 to port 8080
-app.listen(3000, function () {
-   console.log('Node app is running on port 3000');
+app.listen(5000, function () {
+   console.log('Node app is running on port 5000');
 });
 
 module.exports = app;

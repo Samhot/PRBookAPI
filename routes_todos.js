@@ -3,8 +3,8 @@ var mysql = require('mysql');
 
 // connection configurations
 const Server = mysql.createConnection({
-    host: '164.132.195.67',
-    user: 'prbook',
+    host: '127.0.0.1',
+    user: 'root',
     password: 'abcd4ABCD',
     database: 'prbook',
     // port: 3306
@@ -13,7 +13,7 @@ const Server = mysql.createConnection({
 // connect to database
 Server.connect(function(err){
     if (err) throw err;
-    console.log("Connected");
+    console.log("Connected todos");
 })
 
 // Retrieve all todos 
@@ -54,16 +54,18 @@ exports.searchTodo = function (req, res) {
 exports.createTodo = function (req, res) {
     
     let id = req.body.id;
-    let titre = req.body.titre;
-    let contenu = req.body.contenu;
+    let name = req.body.name;
+    let content = req.body.content;
     
-    if (!titre) {
-        return res.status(400).send({ error:true, message: 'Please provide wod name' });
+    if (!name) {
+        return res.status(400).send({ error:true, message: 'Please provide todo name' });
     }
     
-    Server.query("INSERT INTO todos SET ? ", { titre : titre, contenu : contenu, status : "false" }, function (error, results, fields) {
+    Server.query("INSERT INTO todos SET ? ", { name : name, content : content, complete : "0" }, function (error, results, fields) {
         if (error) throw error;
-        return res.json({ results });
+        // return res.json({ results });
+        return res.send({ error: false, data: results, message: 'New todo has been created successfully.' });
+
     });
 };
 

@@ -3,17 +3,17 @@ var mysql = require('mysql');
 
 // connection configurations
 const Server = mysql.createConnection({
-    host: '164.132.195.67',
-    user: 'prbook',
+    host: '127.0.0.1',
+    user: 'root',
     password: 'abcd4ABCD',
     database: 'prbook',
-    // port: 3306
+    // port: 8888
 });
 
 // connect to database
 Server.connect(function(err){
     if (err) throw err;
-    console.log("Connected");
+    console.log("Connected wods");
 })
 
 // Retrieve all wods 
@@ -21,6 +21,14 @@ exports.getWods = function (req, res) {
     Server.query('SELECT * FROM wods', function (error, results, fields) {
         if (error) throw error;
         // results = JSON.stringify(results, ,'');
+        return res.json(results);
+    });
+};
+
+// Retrieve all mouvs 
+exports.getMouvs = function (req, res) {
+    Server.query('SELECT * FROM mouvements', function (error, results, fields) {
+        if (error) throw error;
         return res.json(results);
     });
 };
@@ -41,10 +49,34 @@ exports.getWodById = function (req, res) {
     
 };
 
+// Retrieve mouv with id 
+exports.getMouvById = function (req, res) {
+    
+    let mouv_id = req.params.id;
+    
+    if (!mouv_id) {
+        return res.status(400).send({ error: true, message: 'Please provide mouv_id' });
+    }
+    
+    Server.query('SELECT * FROM mouvements where id=?', mouv_id, function (error, results, fields) {
+        if (error) throw error;
+        return res.json(results[0]);
+    });
+};
+
 // Search for wods with ‘bug’ in their name
 exports.searchWod = function (req, res) {
     let keyword = req.params.keyword;
     Server.query("SELECT * FROM wods WHERE name LIKE ? ", ['%' + keyword + '%'], function (error, results, fields) {
+        if (error) throw error;
+        return res.json(results);
+    });
+};
+
+// Search for wods with ‘bug’ in their name
+exports.searchMouv = function (req, res) {
+    let keyword = req.params.keyword;
+    Server.query("SELECT * FROM mouvements WHERE name LIKE ? ", ['%' + keyword + '%'], function (error, results, fields) {
         if (error) throw error;
         return res.json(results);
     });
