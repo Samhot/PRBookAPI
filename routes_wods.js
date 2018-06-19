@@ -85,14 +85,15 @@ exports.searchMouv = function (req, res) {
 // Add a new wod  
 exports.createWod = function (req, res) {
     
-    let name = req.body.name;
-    let id = req.body.id;
+    let title = req.body.title;
+    let description = req.body.description;
+    let type = req.body.type;
     
-    if (!name) {
+    if (!title) {
         return res.status(400).send({ error:true, message: 'Please provide wod name' });
     }
     
-    Server.query("INSERT INTO wods SET ? ", { name : name }, function (error, results, fields) {
+    Server.query("INSERT INTO wods SET ? ", { title : title, description: description, type: type, coachesNotes: '', movementIds: '' }, function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'New wod has been created successfully.' });
     });
