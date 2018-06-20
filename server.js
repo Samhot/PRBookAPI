@@ -73,7 +73,7 @@ app.get('/mouv/search/:keyword', ServerWOD.searchMouv);
 
 // // // // // // // // // GLOBAL // // // // // // // // // //
 // Search for anything with ‘bug’ in their name
-// app.get('/search/:keyword', ServerGlobal.searchGlobal);
+app.get('/search/:keyword', ServerGlobal.searchGlobal);
 
 // // // // // // // // // // // // // // // // // // // // // // // // // // // /// // // // //
 
