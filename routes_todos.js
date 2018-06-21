@@ -44,7 +44,7 @@ exports.getTodoById = function (req, res) {
 // Search for todos with ‘bug’ in their name
 exports.searchTodo = function (req, res) {
     let keyword = req.params.keyword;
-    Server.query("SELECT * FROM todos WHERE name LIKE ? ", ['%' + keyword + '%'], function (error, results, fields) {
+    Server.query("SELECT * FROM todos WHERE name or content LIKE ? ", ['%' + keyword + '%'], function (error, results, fields) {
         if (error) throw error;
         return res.json(results);
     });
