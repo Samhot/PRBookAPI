@@ -88,12 +88,52 @@ exports.createWod = function (req, res) {
     let name = req.body.name;
     let description = req.body.description;
     let type = req.body.type;
+    let coachesNotes = req.body.coachesNotes;
+    let movementsIds = req.body.movementsIds;
     
     if (!name) {
         return res.status(400).send({ error:true, message: 'Please provide wod name' });
     }
+
+    if (!description) {
+        return res.status(400).send({ error:true, message: 'Please provide wod description' });
+    }
+
+    if (!type) {
+        return res.status(400).send({ error:true, message: 'Please provide wod type' });
+    }
+
+    if (type == 0) {
+        typeName = 'Time';
+    }
+
+    if (type == 1) {
+        typeName = 'Rounds + Reps';
+    }
+
+    if (type == 2) {
+        typeName = 'Reps';
+    }
+
+    if (type == 3) {
+        typeName = 'Charge';
+    }
+
+    if (type == 4) {
+        typeName = 'Autre/Texte';
+    }
+
+    if (type == 5) {
+        typeName = 'Pas de score';
+    }
     
-    Server.query("INSERT INTO wods SET ? ", { name : name, description: description, type: type, coachesNotes: '', movementsIds: '' }, function (error, results, fields) {
+    Server.query("INSERT INTO wods SET ? ", {   name: name,
+                                                description: description,
+                                                type: type,
+                                                coachesNotes: coachesNotes,
+                                                movementsIds: movementsIds,
+                                                typeName: typeName,
+                                            }, function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'New wod has been created successfully.' });
     });
@@ -119,12 +159,16 @@ exports.updateWod = function (req, res) {
     
     let id = req.body.id;
     let name = req.body.name;
+    let description = req.body.description;
+    let type = req.body.type;
+    let coachesNotes = req.body.coachesNotes;
+    let movementsIds = req.body.movementsIds;
     
     if (!id || !name) {
         return res.status(400).send({ message: 'Please provide wod and id' });
     }
     
-    Server.query("UPDATE wods SET name = ? WHERE id = ?", [name, id], function (error, results, fields) {
+    Server.query("UPDATE wods SET name = ?, description = ?, type = ?, coachesNotes = ?, movementsIds = ? WHERE id = ?", [name, description, type, coachesNotes, movementsIds, id], function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'wod has been updated successfully.' });
     });
